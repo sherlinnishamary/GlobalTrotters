@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Trips</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h2>My Trips</h2>
+<div id="list"></div>
+
+<script src="js/storage.js"></script>
+<script>
+const trips = getTrips().filter(t => t.user === getCurrentUser());
+list.innerHTML = trips.map(t =>
+  `<div class="card">
+     <b>${t.name}</b><br>
+     <a href="itinerary.html?id=${t.id}">Itinerary</a> |
+     <a href="budget.html?id=${t.id}">Budget</a> |
+     <a href="calendar.html?id=${t.id}">Calendar</a> |
+     <a href="share.html?id=${t.id}">Share</a>
+   </div>`
+).join("");
+</script>
+
+</body>
+</html>
