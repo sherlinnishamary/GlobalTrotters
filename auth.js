@@ -1,41 +1,54 @@
-function signup() {
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+// GET ELEMENTS
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
 
-  const email = emailInput.value;
-  const password = passwordInput.value;
+// HELPER FUNCTIONS
+function getUsers() {
+  return JSON.parse(localStorage.getItem("users")) || [];
+}
+function saveUsers(users) {
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
+// SIGNUP
+signupBtn.addEventListener("click", () => {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
   if (!email || !password) {
-    alert("Fill both fields");
+    alert("Please fill both fields!");
     return;
   }
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const users = getUsers();
   if (users.find(u => u.email === email)) {
-    alert("User already exists");
+    alert("User already exists!");
     return;
   }
 
   users.push({ email, password });
-  localStorage.setItem("users", JSON.stringify(users));
-  alert("Signup successful");
-}
+  saveUsers(users);
+  alert("Signup successful! You can now login.");
+  emailInput.value = "";
+  passwordInput.value = "";
+});
 
-function login() {
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+// LOGIN
+loginBtn.addEventListener("click", () => {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
-  const email = emailInput.value;
-  const password = passwordInput.value;
-
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const users = getUsers();
   const user = users.find(u => u.email === email && u.password === password);
 
   if (!user) {
-    alert("Invalid login");
+    alert("Invalid email or password!");
     return;
   }
 
   sessionStorage.setItem("user", email);
+  alert("Login successful!");
   window.location.href = "dashboard.html";
-}
+});
